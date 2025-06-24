@@ -14,7 +14,8 @@ export const questions = sqliteTable(
     required: integer({ mode: "boolean" }).notNull().default(false),
     placeholder: text(),
     order: integer().notNull(),
-    type: text({ enum: ["input", "textarea"] }).notNull(),
+    type: text({ enum: ["input", "textarea", "checkbox", "select"] }).notNull(),
+    options: text(), // JSON string for select/checkbox options
   },
   (t) => [index("groupId_idx").on(t.groupId)],
 );

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { PlusIcon, Trash2Icon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -48,8 +49,39 @@ export const AddQuestionModal = ({ group }: AddQuestionModalProps) => {
       label: "",
       placeholder: "Ditt svar her...",
       type: "input",
+      options: [],
     },
   });
+
+  const questionType = form.watch("type");
+  const options = form.watch("options") || [];
+
+  const addOption = () => {
+    const currentOptions = form.getValues("options") || [];
+    form.setValue("options", [...currentOptions, ""]);
+  };
+
+  const removeOption = (index: number) => {
+    const currentOptions = form.getValues("options") || [];
+    const newOptions = currentOptions.filter((_, i) => i !== index);
+    form.setValue("options", newOptions);
+  };
+
+  const updateOption = (index: number, value: string) => {
+    const currentOptions = form.getValues("options") || [];
+    const newOptions = [...currentOptions];
+    newOptions[index] = value;
+    form.setValue("options", newOptions);
+  };
+
+  const handleTypeChange = (value: "input" | "textarea" | "checkbox" | "select") => {
+    form.setValue("type", value);
+    if (value === "checkbox" || value === "select") {
+      if (options.length === 0) {
+        addOption();
+      }
+    }
+  };
 
   const onSubmit = form.handleSubmit(async (data) => {
     const { result, message } = await addQuestionAction(group, data);
@@ -66,7 +98,14 @@ export const AddQuestionModal = ({ group }: AddQuestionModalProps) => {
         variant: "default",
       });
       setIsOpen(false);
-      form.reset();
+      form.reset({
+        required: false,
+        description: "",
+        label: "",
+        placeholder: "Ditt svar her...",
+        type: "input",
+        options: [],
+      });
       router.refresh();
     }
   });
@@ -107,7 +146,7 @@ export const AddQuestionModal = ({ group }: AddQuestionModalProps) => {
                   <FormItem>
                     <FormLabel>Spørsmålstype</FormLabel>
                     <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={handleTypeChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Spørsmålstype" />
@@ -116,6 +155,8 @@ export const AddQuestionModal = ({ group }: AddQuestionModalProps) => {
                         <SelectContent>
                           <SelectItem value="input">Liten tekstboks</SelectItem>
                           <SelectItem value="textarea">Stor tekstboks</SelectItem>
+                          <SelectItem value="checkbox">Avkryssingsbokser</SelectItem>
+                          <SelectItem value="select">Nedtrekksmeny</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -142,23 +183,66 @@ export const AddQuestionModal = ({ group }: AddQuestionModalProps) => {
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="placeholder"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Placeholder</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Placeholder" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      Placeholderen vises i tekstfeltet og kan brukes til å gi et eksempel på hva
-                      som menes med spørsmålet. Ikke påkrevd.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {(questionType === "input" || questionType === "textarea") && (
+                <FormField
+                  control={form.control}
+                  name="placeholder"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Placeholder</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Placeholder" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        Placeholderen vises i tekstfeltet og kan brukes til å gi et eksempel på hva
+                        som menes med spørsmålet. Ikke påkrevd.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              {(questionType === "checkbox" || questionType === "select") && (
+                <FormItem>
+                  <FormLabel>Alternativer</FormLabel>
+                  <FormDescription>
+                    Legg til alternativer som brukeren kan velge mellom.
+                  </FormDescription>
+                  <div className="space-y-2">
+                    {options.map((option, index) => (
+                      <div key={index} className="flex items-center gap-2">
+                        <Input
+                          className="flex-1"
+                          placeholder={`Alternativ ${index + 1}`}
+                          value={option}
+                          onChange={(e) => updateOption(index, e.target.value)}
+                        />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => removeOption(index)}
+                          disabled={options.length <= 1}
+                        >
+                          <Trash2Icon className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      onClick={addOption}
+                      className="w-full"
+                    >
+                      <PlusIcon className="mr-2 h-4 w-4" />
+                      Legg til alternativ
+                    </Button>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
 
               <FormField
                 control={form.control}

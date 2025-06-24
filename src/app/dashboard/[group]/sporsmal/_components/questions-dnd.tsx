@@ -73,8 +73,7 @@ export const QuestionsDnd = ({ groupId, questions }: QuestionsDndProps) => {
           {items.map((question) => (
             <SortableItem
               key={question.id}
-              id={question.id}
-              label={question.label}
+              question={question}
               isPending={isPending}
               onRemove={removeItem}
             />
@@ -86,15 +85,16 @@ export const QuestionsDnd = ({ groupId, questions }: QuestionsDndProps) => {
 };
 
 type SortableItemProps = {
-  id: string;
-  label: string;
+  question: Question;
   isPending: boolean;
   onRemove: (id: string) => void;
 };
 
-const SortableItem = ({ id, label, isPending, onRemove }: SortableItemProps) => {
+const SortableItem = ({ question, isPending, onRemove }: SortableItemProps) => {
   const { toast } = useToast();
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+    id: question.id,
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -102,7 +102,7 @@ const SortableItem = ({ id, label, isPending, onRemove }: SortableItemProps) => 
   };
 
   const handleDeleteQuestion = async () => {
-    const { result, message } = await deleteQuestionAction(id);
+    const { result, message } = await deleteQuestionAction(question.id);
     if (result === "error") {
       toast({
         title: "Noe gikk galt",
@@ -115,9 +115,26 @@ const SortableItem = ({ id, label, isPending, onRemove }: SortableItemProps) => 
         description: message,
         variant: "default",
       });
-      onRemove(id);
+      onRemove(question.id);
     }
   };
+
+  const getTypeLabel = (type: string) => {
+    switch (type) {
+      case "input":
+        return "Liten tekstboks";
+      case "textarea":
+        return "Stor tekstboks";
+      case "checkbox":
+        return "Avkryssingsbokser";
+      case "select":
+        return "Nedtrekksmeny";
+      default:
+        return type;
+    }
+  };
+
+  const options = question.options ? JSON.parse(question.options) : [];
 
   return (
     <div
@@ -138,9 +155,24 @@ const SortableItem = ({ id, label, isPending, onRemove }: SortableItemProps) => 
         <DragHandleDots2Icon className="size-6" />
       </div>
 
-      <h2 className="text-lg font-bold">{label}</h2>
+      <div className="flex-1">
+        <h2 className="text-lg font-bold">{question.label}</h2>
+        <div className="text-muted-foreground flex items-center gap-4 text-sm">
+          <span className="font-medium">{getTypeLabel(question.type)}</span>
+          {question.required && <span className="text-red-500">Påkrevd</span>}
+        </div>
+        {question.description && (
+          <p className="text-muted-foreground mt-1 text-sm">{question.description}</p>
+        )}
+        {options.length > 0 && (
+          <div className="mt-2">
+            <span className="text-muted-foreground text-sm font-medium">Alternativer: </span>
+            <span className="text-muted-foreground text-sm">{options.join(", ")}</span>
+          </div>
+        )}
+      </div>
 
-      <div className="ml-auto flex items-center gap-4">
+      <div className="flex items-center gap-4">
         <button
           type="button"
           onClick={handleDeleteQuestion}

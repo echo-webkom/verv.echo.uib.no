@@ -45,6 +45,7 @@ export const addQuestionAction = async (
 
   await db.insert(questions).values({
     ...parsed,
+    options: parsed.options ? JSON.stringify(parsed.options) : null,
     order: n,
     groupId,
   });

@@ -3,15 +3,41 @@ import { z } from "zod";
 import { Question, studyEnum, yearEnum } from "@/lib/db/schemas";
 
 export const createFormSchema = (questions: Array<Question>) => {
-  const dynamicFields: Record<string, z.ZodString | z.ZodOptional<z.ZodString>> = {};
+  const dynamicFields: Record<string, z.ZodType<unknown>> = {};
 
   for (const question of questions) {
     let field;
 
-    if (question.required) {
-      field = z.string().min(1, `${question.label} er påkrevd.`);
+    const options = question.options ? JSON.parse(question.options) : [];
+
+    if (question.type === "checkbox") {
+      const validOptions = z.array(z.enum(options.length > 0 ? options : [""]));
+      if (question.required) {
+        field = validOptions.min(1, `${question.label} er påkrevd.`);
+      } else {
+        field = validOptions.optional();
+      }
+    } else if (question.type === "select") {
+      if (options.length > 0) {
+        const validOption = z.enum(options);
+        if (question.required) {
+          field = validOption;
+        } else {
+          field = validOption.optional();
+        }
+      } else {
+        if (question.required) {
+          field = z.string().min(1, `${question.label} er påkrevd.`);
+        } else {
+          field = z.string().optional();
+        }
+      }
     } else {
-      field = z.string().optional();
+      if (question.required) {
+        field = z.string().min(1, `${question.label} er påkrevd.`);
+      } else {
+        field = z.string().optional();
+      }
     }
 
     dynamicFields[question.id] = field;

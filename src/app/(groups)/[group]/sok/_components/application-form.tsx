@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -175,13 +176,72 @@ export const ApplicationForm = ({ group, user, questions }: ApplicationFormProps
                       <Input
                         placeholder={question.placeholder ?? "Svar her"}
                         type="text"
-                        {...field}
+                        value={(field.value as string) || ""}
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                        name={field.name}
                       />
-                    ) : (
+                    ) : question.type === "textarea" ? (
                       <Textarea
                         rows={6}
                         placeholder={question.placeholder ?? "Svar her"}
-                        {...field}
+                        value={(field.value as string) || ""}
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                        name={field.name}
+                      />
+                    ) : question.type === "select" ? (
+                      <Select onValueChange={field.onChange} defaultValue={field.value as string}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Velg et alternativ" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {question.options &&
+                            JSON.parse(question.options).map((option: string) => (
+                              <SelectItem key={option} value={option}>
+                                {option}
+                              </SelectItem>
+                            ))}
+                        </SelectContent>
+                      </Select>
+                    ) : question.type === "checkbox" ? (
+                      <div className="space-y-3">
+                        {question.options &&
+                          JSON.parse(question.options).map((option: string) => (
+                            <div key={option} className="flex items-center space-x-2">
+                              <Checkbox
+                                id={`${question.id}-${option}`}
+                                checked={(field.value as string[])?.includes(option) || false}
+                                onCheckedChange={(checked) => {
+                                  const currentValues = (field.value as string[]) || [];
+                                  if (checked) {
+                                    field.onChange([...currentValues, option]);
+                                  } else {
+                                    field.onChange(
+                                      currentValues.filter((value: string) => value !== option),
+                                    );
+                                  }
+                                }}
+                              />
+                              <label
+                                htmlFor={`${question.id}-${option}`}
+                                className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                              >
+                                {option}
+                              </label>
+                            </div>
+                          ))}
+                      </div>
+                    ) : (
+                      <Input
+                        placeholder={question.placeholder ?? "Svar her"}
+                        type="text"
+                        value={(field.value as string) || ""}
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                        name={field.name}
                       />
                     )}
                   </FormControl>

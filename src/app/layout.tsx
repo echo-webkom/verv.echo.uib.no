@@ -49,6 +49,9 @@ type RootLayoutProps = {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="no" suppressHydrationWarning>
+      <head>
+        <script src="/js/code.js" async></script>
+      </head>
       <body className={cn("flex min-h-screen flex-col antialiased", inter.className)}>
         <ThemeProvider
           attribute="class"
