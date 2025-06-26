@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+env:
+  DATABASE_URL: http://127.0.0.1:8080
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    services:
+      libsql:
+        image: ghcr.io/tursodatabase/libsql-server:latest
+        ports:
+          - 8080:8080
+        env:
+          SQLD_NODE: primary
+
+    steps:
+      - name: 🔍 Checkout
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 🐢 Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: ./pnpm-lock.yaml
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🏗️ Migrate database
+        run: pnpm db:migrate
+
+      - name: 🛫 Type check
+        run: pnpm typecheck
+
+      - name: 📝 Lint
+        run: pnpm lint
+
+      - name: 👷🏻‍♂️ Build
+        run: pnpm build
