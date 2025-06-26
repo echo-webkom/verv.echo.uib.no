@@ -57,7 +57,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
           attribute="class"
           defaultTheme="system"
           enableSystem
-          disableTransitionOnChange
         >
           <SiteHeader />
           <div className="flex-1 py-14">{children}</div>

@@ -27,7 +27,7 @@ export async function getFeideUser(
 
   return {
     id: feideUser.user.userid,
-    email: feideUser.user.email,
+    email: feideUser.user.email.toLowerCase(),
     name: feideUser.user.name,
   };
 }

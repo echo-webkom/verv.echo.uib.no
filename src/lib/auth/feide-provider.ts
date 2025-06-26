@@ -1,4 +1,4 @@
-import { OAuth2Client } from "oslo/oauth2";
+import { OAuth2Client } from "arctic";
 
 const authorizeEndpoint = "https://auth.dataporten.no/oauth/authorization";
 const tokenEndpoint = "https://auth.dataporten.no/oauth/token";
@@ -6,14 +6,12 @@ const tokenEndpoint = "https://auth.dataporten.no/oauth/token";
 export interface FeideTokens {
   accessToken: string;
   tokenType: string;
-  expiresAt: number;
+  expiresAt: Date;
   scope: string;
-  idToken: string;
 }
 
 export class Feide {
   private client: OAuth2Client;
-  private clientSecret: string;
 
   constructor(
     clientId: string,
@@ -22,10 +20,7 @@ export class Feide {
       redirectURI?: string;
     },
   ) {
-    this.client = new OAuth2Client(clientId, authorizeEndpoint, tokenEndpoint, {
-      redirectURI: options?.redirectURI,
-    });
-    this.clientSecret = clientSecret;
+    this.client = new OAuth2Client(clientId, clientSecret, options?.redirectURI ?? null);
   }
 
   public async createAuthorizationURL(
@@ -34,31 +29,17 @@ export class Feide {
       scopes?: string[];
     },
   ): Promise<URL> {
-    const url = await this.client.createAuthorizationURL({
-      scopes: options?.scopes ?? [],
-    });
-    url.searchParams.set("state", state);
-    return url;
+    return this.client.createAuthorizationURL(authorizeEndpoint, state, options?.scopes ?? []);
   }
 
   public async validateAuthorizationCode(code: string): Promise<FeideTokens> {
-    const result = await this.client.validateAuthorizationCode<{
-      access_token: string;
-      token_type: string;
-      expires_in: number;
-      scope: string;
-      id_token: string;
-    }>(code, {
-      authenticateWith: "http_basic_auth",
-      credentials: this.clientSecret,
-    });
+    const result = await this.client.validateAuthorizationCode(tokenEndpoint, code, null);
 
     const tokens: FeideTokens = {
-      accessToken: result.access_token,
-      tokenType: result.token_type,
-      expiresAt: new Date().getTime() / 1000 + result.expires_in,
-      scope: result.scope,
-      idToken: result.id_token,
+      accessToken: result.accessToken(),
+      tokenType: result.tokenType(),
+      expiresAt: result.accessTokenExpiresAt(),
+      scope: result.scopes().join(" "),
     };
 
     return tokens;
