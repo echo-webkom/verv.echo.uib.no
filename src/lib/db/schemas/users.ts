@@ -9,6 +9,7 @@ export const users = sqliteTable("user", {
   id: text().primaryKey().$defaultFn(nanoid),
   name: text(),
   email: text().unique(),
+  alternativeEmail: text().unique(),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({

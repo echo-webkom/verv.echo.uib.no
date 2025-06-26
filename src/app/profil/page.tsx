@@ -10,6 +10,7 @@ import {
 import { auth } from "@/lib/auth/lucia";
 import { groupNames } from "@/lib/constants";
 import { selectApplicationsByUser } from "@/lib/db/queries";
+import { UpdateEmailForm } from "./_components/update-email-form";
 
 export default async function ProfilePage() {
   const user = await auth();
@@ -29,6 +30,10 @@ export default async function ProfilePage() {
           <p className="text-lg">
             <span className="font-medium">Navn:</span> {user.name}
           </p>
+        </div>
+
+        <div className="space-y-4">
+          <UpdateEmailForm email={user.alternativeEmail ?? user.email ?? ""} />
         </div>
       </div>
 

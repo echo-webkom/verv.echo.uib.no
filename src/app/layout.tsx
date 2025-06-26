@@ -53,11 +53,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <script src="/js/code.js" async></script>
       </head>
       <body className={cn("flex min-h-screen flex-col antialiased", inter.className)}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-        >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <SiteHeader />
           <div className="flex-1 py-14">{children}</div>
           <SiteFooter />
