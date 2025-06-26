@@ -1,0 +1,35 @@
+{
+	"lastUpdated": "2025-06-26T21:32:57.524476+02:00",
+	"fields": {
+		"ADMIN_KEY": {
+			"key": "ADMIN_KEY"
+		},
+		"AWS_REGION": {
+			"key": "AWS_REGION"
+		},
+		"AWS_SES_ACCESS_KEY_ID": {
+			"key": "AWS_SES_ACCESS_KEY_ID"
+		},
+		"AWS_SES_SECRET_ACCESS_KEY": {
+			"key": "AWS_SES_SECRET_ACCESS_KEY"
+		},
+		"DATABASE_URL": {
+			"key": "DATABASE_URL"
+		},
+		"FEIDE_CLIENT_ID": {
+			"key": "FEIDE_CLIENT_ID"
+		},
+		"FEIDE_CLIENT_SECRET": {
+			"key": "FEIDE_CLIENT_SECRET"
+		},
+		"GROUPS_API_URL": {
+			"key": "GROUPS_API_URL"
+		},
+		"SECRET_CODE_1": {
+			"key": "SECRET_CODE_1"
+		},
+		"SECRET_CODE_2": {
+			"key": "SECRET_CODE_2"
+		}
+	}
+}
