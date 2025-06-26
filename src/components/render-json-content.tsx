@@ -18,7 +18,9 @@ export const RenderJSONContent = ({ json }: RenderJSONContentProps) => {
   if (json?.type === "doc") {
     return (
       <div>
-        {json.content?.map((child, index) => <RenderJSONContent key={index} json={child} />)}
+        {json.content?.map((child, index) => (
+          <RenderJSONContent key={index} json={child} />
+        ))}
       </div>
     );
   }
@@ -48,7 +50,9 @@ export const RenderJSONContent = ({ json }: RenderJSONContentProps) => {
 
     return (
       <MarkdownH>
-        {json.content?.map((child, index) => <RenderJSONContent key={index} json={child} />)}
+        {json.content?.map((child, index) => (
+          <RenderJSONContent key={index} json={child} />
+        ))}
       </MarkdownH>
     );
   }
@@ -56,7 +60,9 @@ export const RenderJSONContent = ({ json }: RenderJSONContentProps) => {
   if (json?.type === "paragraph") {
     return (
       <MarkdownP>
-        {json.content?.map((child, index) => <RenderJSONContent key={index} json={child} />)}
+        {json.content?.map((child, index) => (
+          <RenderJSONContent key={index} json={child} />
+        ))}
       </MarkdownP>
     );
   }
