@@ -14,7 +14,7 @@ export const addQuestionAction = async (
   groupId: Group,
   data: z.infer<typeof addQuestionSchema>,
 ) => {
-  const db = getDb();
+  const db = await getDb();
   const user = await auth();
 
   if (!user) {
@@ -61,7 +61,7 @@ export const changeQuestionOrderAction = async (
   groupId: Group,
   newQuestionsOrder: Array<string>,
 ) => {
-  const db = getDb();
+  const db = await getDb();
   const user = await auth();
 
   if (!user) {
@@ -94,7 +94,7 @@ export const changeQuestionOrderAction = async (
 };
 
 export const deleteQuestionAction = async (questionId: string) => {
-  const db = getDb();
+  const db = await getDb();
   const user = await auth();
 
   if (!user) {

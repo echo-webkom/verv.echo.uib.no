@@ -14,7 +14,7 @@ type Props = {
 
 export default async function GroupEditor({ params }: Props) {
   const { group } = await params;
-  const db = getDb();
+  const db = await getDb();
   const user = await auth();
 
   if (!user || !isMemberOf(user, [group, "webkom"])) {

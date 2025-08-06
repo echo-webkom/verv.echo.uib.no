@@ -1,9 +1,13 @@
 import type { NextConfig } from "next";
 import createMdx from "@next/mdx";
 import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
+import dotenv from "dotenv";
+
+dotenv.config({
+  path: ".dev.vars",
+});
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ["@libsql/isomorphic-ws"],
   async headers() {
     return [
       {

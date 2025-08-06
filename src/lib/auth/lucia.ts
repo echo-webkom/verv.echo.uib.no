@@ -7,8 +7,8 @@ import { Group } from "../constants";
 import { getDb } from "../db/drizzle";
 import { sessions, users, type User as DatabaseUser } from "../db/schemas";
 
-export const getLucia = cache(() => {
-  const db = getDb();
+export const getLucia = cache(async () => {
+  const db = await getDb();
 
   const adapter = new DrizzleSQLiteAdapter(db, sessions, users);
   return new Lucia(adapter, {
@@ -31,7 +31,7 @@ export const getLucia = cache(() => {
 
 declare module "lucia" {
   interface Register {
-    Lucia: ReturnType<typeof getLucia>;
+    Lucia: Awaited<ReturnType<typeof getLucia>>;
     DatabaseUserAttributes: DatabaseUser;
   }
 }
@@ -42,8 +42,8 @@ export type AuthUser = User & {
 };
 
 export const auth = cache(async (): Promise<AuthUser | null> => {
-  const db = getDb();
-  const lucia = getLucia();
+  const db = await getDb();
+  const lucia = await getLucia();
   const cookieStore = await cookies();
 
   const sessionId = cookieStore.get(lucia.sessionCookieName)?.value ?? null;

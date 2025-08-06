@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { LibsqlError } from "@libsql/client/web";
 import { z } from "zod";
 
 import { auth } from "@/lib/auth/lucia";
@@ -24,7 +23,7 @@ export const submitApplicationAction = async (
   group: Group,
   data: z.infer<ReturnType<typeof createFormSchema>>,
 ): Promise<Result> => {
-  const db = getDb();
+  const db = await getDb();
   const user = await auth();
 
   if (!user) {
@@ -84,9 +83,9 @@ export const submitApplicationAction = async (
       userId: user.id,
     });
   } catch (error) {
-    if (error instanceof LibsqlError) {
+    if (error instanceof Error && "message" in error) {
       // Duplicate key error
-      if (error.code === "2627") {
+      if (error.message.includes("unique constraint")) {
         return {
           result: "error",
           message: "Du kan ikke søke flere ganger",

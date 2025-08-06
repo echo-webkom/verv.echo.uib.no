@@ -14,7 +14,7 @@ const updateAlternativeEmailSchema = z.object({
 });
 
 export const updateAlternativeEmail = async (formData: FormData) => {
-  const db = getDb();
+  const db = await getDb();
   const user = await auth();
 
   if (!user) {

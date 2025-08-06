@@ -9,8 +9,8 @@ import { accounts, memberships, users } from "@/lib/db/schemas";
 import { getEchoGroups } from "@/lib/get-echo-groups";
 
 export const GET = async (request: Request) => {
-  const db = getDb();
-  const lucia = getLucia();
+  const db = await getDb();
+  const lucia = await getLucia();
 
   const url = new URL(request.url);
   const code = url.searchParams.get("code");

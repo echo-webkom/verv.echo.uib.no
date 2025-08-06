@@ -15,4 +15,13 @@
   "observability": {
     "enabled": true,
   },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "verv-db",
+      "database_id": "77214fa0-9835-4abf-9788-bc5dda210706",
+      "migrations_dir": "./drizzle/migrations",
+      "migrations_table": "__drizzle_migrations",
+    },
+  ],
 }

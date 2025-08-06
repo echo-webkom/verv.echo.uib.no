@@ -1,4 +1,6 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 import { FancyLink } from "@/components/fancy-link";
 import { auth } from "@/lib/auth/lucia";
@@ -13,7 +15,7 @@ type Props = {
 };
 
 const getData = async (group: string) => {
-  const db = getDb();
+  const db = await getDb();
   const groups = Object.keys(groupNames);
 
   if (!groups.includes(group)) {
@@ -31,7 +33,7 @@ const getData = async (group: string) => {
   };
 };
 
-export const generateMetadata = async ({ params }: Props) => {
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const { group } = await params;
   const g = await getData(group);
 
@@ -44,6 +46,8 @@ export const generateMetadata = async ({ params }: Props) => {
 export default async function ApplicationPage({ params }: Props) {
   const { group } = await params;
   const user = await auth();
+  const context = await getCloudflareContext({ async: true });
+  const { SECRET_CODE_2 } = context.env;
 
   if (!user) {
     return (
@@ -68,7 +72,7 @@ export default async function ApplicationPage({ params }: Props) {
     <main className="mx-auto w-full max-w-2xl space-y-4 px-6">
       <div className="absolute">
         <span className="hover:text-foreground right-0 bottom-0 text-transparent transition-colors select-all">
-          K0D3: {process.env.SECRET_CODE_2}
+          K0D3: {SECRET_CODE_2}
         </span>
       </div>
       <h1 className="text-3xl font-bold">Send inn søknad til {g.name}</h1>

@@ -10,7 +10,7 @@ import { groups } from "@/lib/db/schemas";
 import { isMemberOf } from "@/lib/is-member-of";
 
 export const updateGroupDescription = async (group: Group, description: JSONContent) => {
-  const db = getDb();
+  const db = await getDb();
   const user = await auth();
 
   if (!user) {

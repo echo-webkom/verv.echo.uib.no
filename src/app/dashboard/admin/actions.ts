@@ -24,7 +24,7 @@ export const updateUserAction = async (
   data: z.infer<typeof userFormSchema>,
 ): Promise<Response> => {
   try {
-    const db = getDb();
+    const db = await getDb();
     const actionUser = await auth();
 
     if (!actionUser) {

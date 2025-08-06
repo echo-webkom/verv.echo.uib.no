@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 
-import FAQ from "@/mdx/faq.mdx";
+import FAQ from "./content.mdx";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "FAQ",
   description: "Ofte stilte spørsmål",
-} satisfies Metadata;
+};
 
 export default function FAQPage() {
   return (

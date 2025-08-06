@@ -1,2 +1,17 @@
 # Load .env.development* files when running `wrangler dev`
 NEXTJS_ENV=development
+
+# --- Auth
+FEIDE_CLIENT_ID=
+FEIDE_CLIENT_SECRET=
+
+# --- Groups
+GROUPS_API_URL=http://localhost:3000/api/groups
+
+# --- API
+ADMIN_KEY="foobar"
+
+# --- SES
+AWS_REGION=eu-north-1
+AWS_SES_ACCESS_KEY_ID=
+AWS_SES_SECRET_ACCESS_KEY=

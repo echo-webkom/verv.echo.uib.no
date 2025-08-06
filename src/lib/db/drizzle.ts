@@ -1,17 +1,12 @@
 import { cache } from "react";
-import { createClient } from "@libsql/client/web";
-import { drizzle } from "drizzle-orm/libsql/web";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { drizzle } from "drizzle-orm/d1";
 
 import * as schema from "./schemas";
 
-const url = process.env.DATABASE_URL as string;
-const authToken = process.env.DATABASE_AUTH_TOKEN;
+export const getDb = cache(async () => {
+  const context = await getCloudflareContext({ async: true });
+  const { DB } = context.env;
 
-export const getDb = cache(() => {
-  const client = createClient({
-    url,
-    authToken,
-  });
-
-  return drizzle(client, { schema, casing: "snake_case" });
+  return drizzle(DB, { schema, casing: "snake_case" });
 });

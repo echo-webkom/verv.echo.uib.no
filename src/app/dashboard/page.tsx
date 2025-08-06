@@ -12,10 +12,10 @@ import { isWebkom } from "@/lib/is-member-of";
 import { WebkomVsBedkom } from "./_components/webkom-vs-bedkom";
 import { WebkomVsConsulting } from "./_components/webkom-vs-consulting";
 
-const applicationCountStmt = cache(() => {
-  const db = getDb();
+const applicationCountStmt = cache(async () => {
+  const db = await getDb();
 
-  return db
+  return await db
     .select({
       count: sql<number>`count(*)`,
     })
@@ -29,9 +29,7 @@ export default async function Dashboard() {
     return redirect("/logg-inn");
   }
 
-  const applicationCount = await applicationCountStmt()
-    .execute()
-    .then((res) => res[0].count);
+  const applicationCount = await applicationCountStmt().then((res) => res[0].count);
 
   return (
     <>

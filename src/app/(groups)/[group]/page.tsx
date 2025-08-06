@@ -41,7 +41,7 @@ const groups = [
 ] as const;
 
 const getData = cache(async (id: string) => {
-  const db = getDb();
+  const db = await getDb();
   const group = groups.find((group) => group.id === id);
 
   if (!group) {

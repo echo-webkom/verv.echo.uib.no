@@ -7,7 +7,7 @@ import { isMemberOf } from "@/lib/is-member-of";
 import { ProgressBar } from "./progress-bar";
 
 export const WebkomVsBedkom = async () => {
-  const db = getDb();
+  const db = await getDb();
   const user = await auth();
 
   const webkomCountStmt = db

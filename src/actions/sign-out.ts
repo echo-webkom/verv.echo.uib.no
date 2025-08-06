@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { auth, getLucia } from "@/lib/auth/lucia";
 
 export const signOutAction = async (redirectTo?: string) => {
-  const lucia = getLucia();
+  const lucia = await getLucia();
   const user = await auth();
   const cookieStore = await cookies();
 

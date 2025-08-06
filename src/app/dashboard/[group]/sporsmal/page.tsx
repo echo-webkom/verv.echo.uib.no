@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default async function ChangeQuestions({ params }: Props) {
-  const db = getDb();
+  const db = await getDb();
   const user = await auth();
   const { group } = await params;
 
