@@ -1,3 +1,4 @@
+import { cache } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { sql } from "drizzle-orm";
@@ -5,17 +6,21 @@ import { sql } from "drizzle-orm";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth/lucia";
 import { Group, groupNames } from "@/lib/constants";
-import { db } from "@/lib/db/drizzle";
+import { getDb } from "@/lib/db/drizzle";
 import { applications } from "@/lib/db/schemas";
 import { isWebkom } from "@/lib/is-member-of";
 import { WebkomVsBedkom } from "./_components/webkom-vs-bedkom";
 import { WebkomVsConsulting } from "./_components/webkom-vs-consulting";
 
-const applicationCountStmt = db
-  .select({
-    count: sql<number>`count(*)`,
-  })
-  .from(applications);
+const applicationCountStmt = cache(() => {
+  const db = getDb();
+
+  return db
+    .select({
+      count: sql<number>`count(*)`,
+    })
+    .from(applications);
+});
 
 export default async function Dashboard() {
   const user = await auth();
@@ -24,7 +29,9 @@ export default async function Dashboard() {
     return redirect("/logg-inn");
   }
 
-  const applicationCount = await applicationCountStmt.execute().then((res) => res[0].count);
+  const applicationCount = await applicationCountStmt()
+    .execute()
+    .then((res) => res[0].count);
 
   return (
     <>

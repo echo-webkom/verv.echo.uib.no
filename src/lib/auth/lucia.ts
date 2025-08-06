@@ -4,31 +4,34 @@ import { DrizzleSQLiteAdapter } from "@lucia-auth/adapter-drizzle";
 import { Lucia, Session, User } from "lucia";
 
 import { Group } from "../constants";
-import { db } from "../db/drizzle";
+import { getDb } from "../db/drizzle";
 import { sessions, users, type User as DatabaseUser } from "../db/schemas";
 
-const adapter = new DrizzleSQLiteAdapter(db, sessions, users);
+export const getLucia = cache(() => {
+  const db = getDb();
 
-export const lucia = new Lucia(adapter, {
-  sessionCookie: {
-    expires: false,
-    attributes: {
-      secure: process.env.NODE_ENV === "production",
+  const adapter = new DrizzleSQLiteAdapter(db, sessions, users);
+  return new Lucia(adapter, {
+    sessionCookie: {
+      expires: false,
+      attributes: {
+        secure: process.env.NODE_ENV === "production",
+      },
     },
-  },
-  getUserAttributes: (user) => {
-    return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      alternativeEmail: user.alternativeEmail,
-    };
-  },
+    getUserAttributes: (user) => {
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        alternativeEmail: user.alternativeEmail,
+      };
+    },
+  });
 });
 
 declare module "lucia" {
   interface Register {
-    Lucia: typeof lucia;
+    Lucia: ReturnType<typeof getLucia>;
     DatabaseUserAttributes: DatabaseUser;
   }
 }
@@ -39,6 +42,8 @@ export type AuthUser = User & {
 };
 
 export const auth = cache(async (): Promise<AuthUser | null> => {
+  const db = getDb();
+  const lucia = getLucia();
   const cookieStore = await cookies();
 
   const sessionId = cookieStore.get(lucia.sessionCookieName)?.value ?? null;

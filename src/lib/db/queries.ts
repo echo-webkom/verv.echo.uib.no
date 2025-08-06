@@ -1,20 +1,26 @@
+import { cache } from "react";
 import { asc, desc, eq } from "drizzle-orm";
 
 import { Group } from "../constants";
-import { db } from "./drizzle";
+import { getDb } from "./drizzle";
 
-export const selectAllUsers = () =>
-  db.query.users.findMany({
+export const selectAllUsers = cache(() => {
+  const db = getDb();
+
+  return db.query.users.findMany({
     with: {
       memberships: true,
     },
     orderBy: (user) => desc(user.name),
   });
+});
 
 export type SelectApplicationByGroupQuery = Awaited<ReturnType<typeof selectApplicationsByGroup>>;
 
-export const selectApplicationsByGroup = (group: Group) =>
-  db.query.applications.findMany({
+export const selectApplicationsByGroup = cache((group: Group) => {
+  const db = getDb();
+
+  return db.query.applications.findMany({
     where: (application) => eq(application.groupId, group),
     orderBy: (application) => asc(application.createdAt),
     with: {
@@ -29,9 +35,13 @@ export const selectApplicationsByGroup = (group: Group) =>
       },
     },
   });
+});
 
-export const selectApplicationsByUser = (userId: string) =>
-  db.query.applications.findMany({
+export const selectApplicationsByUser = cache((userId: string) => {
+  const db = getDb();
+
+  return db.query.applications.findMany({
     where: (application) => eq(application.userId, userId),
     orderBy: (application) => desc(application.createdAt),
   });
+});

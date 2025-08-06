@@ -2,7 +2,7 @@ import { notFound, redirect } from "next/navigation";
 
 import { auth } from "@/lib/auth/lucia";
 import { Group, groupNames } from "@/lib/constants";
-import { db } from "@/lib/db/drizzle";
+import { getDb } from "@/lib/db/drizzle";
 import { isMemberOf } from "@/lib/is-member-of";
 import { MarkdownH1 } from "@/mdx-components";
 import { AddQuestionModal } from "./_components/add-question-modal";
@@ -15,6 +15,7 @@ type Props = {
 };
 
 export default async function ChangeQuestions({ params }: Props) {
+  const db = getDb();
   const user = await auth();
   const { group } = await params;
 

@@ -1,27 +1,28 @@
 import { eq, sql } from "drizzle-orm";
 
 import { auth } from "@/lib/auth/lucia";
-import { db } from "@/lib/db/drizzle";
+import { getDb } from "@/lib/db/drizzle";
 import { applications } from "@/lib/db/schemas";
 import { isMemberOf } from "@/lib/is-member-of";
 import { ProgressBar } from "./progress-bar";
 
-const webkomCountStmt = db
-  .select({
-    count: sql<number>`count(*)`,
-  })
-  .from(applications)
-  .where(eq(applications.groupId, "webkom"));
-
-const bedkomCountStmt = db
-  .select({
-    count: sql<number>`count(*)`,
-  })
-  .from(applications)
-  .where(eq(applications.groupId, "bedkom"));
-
 export const WebkomVsBedkom = async () => {
+  const db = getDb();
   const user = await auth();
+
+  const webkomCountStmt = db
+    .select({
+      count: sql<number>`count(*)`,
+    })
+    .from(applications)
+    .where(eq(applications.groupId, "webkom"));
+
+  const bedkomCountStmt = db
+    .select({
+      count: sql<number>`count(*)`,
+    })
+    .from(applications)
+    .where(eq(applications.groupId, "bedkom"));
 
   if (!user) {
     return null;

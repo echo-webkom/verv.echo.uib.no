@@ -6,7 +6,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { auth } from "@/lib/auth/lucia";
-import { db } from "@/lib/db/drizzle";
+import { getDb } from "@/lib/db/drizzle";
 import { users } from "@/lib/db/schemas";
 
 const updateAlternativeEmailSchema = z.object({
@@ -14,6 +14,7 @@ const updateAlternativeEmailSchema = z.object({
 });
 
 export const updateAlternativeEmail = async (formData: FormData) => {
+  const db = getDb();
   const user = await auth();
 
   if (!user) {

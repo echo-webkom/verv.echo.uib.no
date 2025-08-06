@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { FancyLink } from "@/components/fancy-link";
 import { auth } from "@/lib/auth/lucia";
 import { Group, groupNames } from "@/lib/constants";
-import { db } from "@/lib/db/drizzle";
+import { getDb } from "@/lib/db/drizzle";
 import { ApplicationForm } from "./_components/application-form";
 
 type Props = {
@@ -13,6 +13,7 @@ type Props = {
 };
 
 const getData = async (group: string) => {
+  const db = getDb();
   const groups = Object.keys(groupNames);
 
   if (!groups.includes(group)) {

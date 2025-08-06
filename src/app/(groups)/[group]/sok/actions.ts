@@ -1,12 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { LibsqlError } from "@libsql/client";
+import { LibsqlError } from "@libsql/client/web";
 import { z } from "zod";
 
 import { auth } from "@/lib/auth/lucia";
 import { APPLICATION_DEADLINE, Group } from "@/lib/constants";
-import { db } from "@/lib/db/drizzle";
+import { getDb } from "@/lib/db/drizzle";
 import { applications } from "@/lib/db/schemas";
 import { isMemberOf } from "@/lib/is-member-of";
 import { createFormSchema } from "./_lib/schema";
@@ -24,6 +24,7 @@ export const submitApplicationAction = async (
   group: Group,
   data: z.infer<ReturnType<typeof createFormSchema>>,
 ): Promise<Result> => {
+  const db = getDb();
   const user = await auth();
 
   if (!user) {

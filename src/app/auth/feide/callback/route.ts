@@ -3,12 +3,15 @@ import { OAuth2RequestError } from "arctic";
 import { nanoid } from "nanoid";
 
 import { feide, getFeideUser } from "@/lib/auth/feide";
-import { lucia } from "@/lib/auth/lucia";
-import { db } from "@/lib/db/drizzle";
+import { getLucia } from "@/lib/auth/lucia";
+import { getDb } from "@/lib/db/drizzle";
 import { accounts, memberships, users } from "@/lib/db/schemas";
 import { getEchoGroups } from "@/lib/get-echo-groups";
 
 export const GET = async (request: Request) => {
+  const db = getDb();
+  const lucia = getLucia();
+
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");

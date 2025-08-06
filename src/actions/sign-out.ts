@@ -3,9 +3,10 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { auth, lucia } from "@/lib/auth/lucia";
+import { auth, getLucia } from "@/lib/auth/lucia";
 
 export const signOutAction = async (redirectTo?: string) => {
+  const lucia = getLucia();
   const user = await auth();
   const cookieStore = await cookies();
 

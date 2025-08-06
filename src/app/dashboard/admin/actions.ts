@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { auth } from "@/lib/auth/lucia";
-import { db } from "@/lib/db/drizzle";
+import { getDb } from "@/lib/db/drizzle";
 import { memberships } from "@/lib/db/schemas";
 import { isWebkom } from "@/lib/is-member-of";
 import { userFormSchema } from "./schemas";
@@ -24,6 +24,7 @@ export const updateUserAction = async (
   data: z.infer<typeof userFormSchema>,
 ): Promise<Response> => {
   try {
+    const db = getDb();
     const actionUser = await auth();
 
     if (!actionUser) {

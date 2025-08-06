@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { FancyLink } from "@/components/fancy-link";
 import { RenderJSONContent } from "@/components/render-json-content";
-import { db } from "@/lib/db/drizzle";
+import { getDb } from "@/lib/db/drizzle";
 
 const groups = [
   {
@@ -41,6 +41,7 @@ const groups = [
 ] as const;
 
 const getData = cache(async (id: string) => {
+  const db = getDb();
   const group = groups.find((group) => group.id === id);
 
   if (!group) {

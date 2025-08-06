@@ -2,7 +2,7 @@ import { notFound, redirect } from "next/navigation";
 
 import { auth } from "@/lib/auth/lucia";
 import { Group, groupNames } from "@/lib/constants";
-import { db } from "@/lib/db/drizzle";
+import { getDb } from "@/lib/db/drizzle";
 import { isMemberOf } from "@/lib/is-member-of";
 import { UpdateDescription } from "./_components/edit-description";
 
@@ -14,6 +14,7 @@ type Props = {
 
 export default async function GroupEditor({ params }: Props) {
   const { group } = await params;
+  const db = getDb();
   const user = await auth();
 
   if (!user || !isMemberOf(user, [group, "webkom"])) {

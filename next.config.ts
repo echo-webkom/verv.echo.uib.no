@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 import createMdx from "@next/mdx";
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 
 const nextConfig: NextConfig = {
+  serverExternalPackages: ["@libsql/isomorphic-ws"],
   async headers() {
     return [
       {
@@ -20,5 +22,7 @@ const nextConfig: NextConfig = {
 const withMdx = createMdx({
   extension: /\.(md|mdx)$/,
 });
+
+initOpenNextCloudflareForDev();
 
 export default withMdx(nextConfig);

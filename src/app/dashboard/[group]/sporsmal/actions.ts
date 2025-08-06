@@ -5,7 +5,7 @@ import { z } from "zod";
 
 import { auth } from "@/lib/auth/lucia";
 import { Group } from "@/lib/constants";
-import { db } from "@/lib/db/drizzle";
+import { getDb } from "@/lib/db/drizzle";
 import { questions } from "@/lib/db/schemas";
 import { isMemberOf } from "@/lib/is-member-of";
 import { addQuestionSchema } from "./_lib/add-question-schema";
@@ -14,6 +14,7 @@ export const addQuestionAction = async (
   groupId: Group,
   data: z.infer<typeof addQuestionSchema>,
 ) => {
+  const db = getDb();
   const user = await auth();
 
   if (!user) {
@@ -60,6 +61,7 @@ export const changeQuestionOrderAction = async (
   groupId: Group,
   newQuestionsOrder: Array<string>,
 ) => {
+  const db = getDb();
   const user = await auth();
 
   if (!user) {
@@ -92,6 +94,7 @@ export const changeQuestionOrderAction = async (
 };
 
 export const deleteQuestionAction = async (questionId: string) => {
+  const db = getDb();
   const user = await auth();
 
   if (!user) {
