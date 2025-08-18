@@ -8,7 +8,6 @@ import { auth } from "@/lib/auth/lucia";
 import { APPLICATION_DEADLINE, Group } from "@/lib/constants";
 import { db } from "@/lib/db/drizzle";
 import { applications } from "@/lib/db/schemas";
-import { isMemberOf } from "@/lib/is-member-of";
 import { createFormSchema } from "./_lib/schema";
 
 type Result =
@@ -30,13 +29,6 @@ export const submitApplicationAction = async (
     return {
       result: "error",
       message: "Du må logge inn for å søke",
-    };
-  }
-
-  if (!isMemberOf(user, [group, "webkom"])) {
-    return {
-      result: "error",
-      message: "Du er ikke medlem av gruppen",
     };
   }
 
