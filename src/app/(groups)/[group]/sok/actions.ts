@@ -26,6 +26,10 @@ export const submitApplicationAction = async (
   const user = await auth();
 
   if (!user) {
+    console.warn("Application submitted without user session", {
+      group,
+      data,
+    });
     return {
       result: "error",
       message: "Du må logge inn for å søke",
@@ -40,6 +44,7 @@ export const submitApplicationAction = async (
   const parsedForm = formSchema.safeParse(data);
 
   if (!parsedForm.success) {
+    console.warn("Invalid application form data submitted", parsedForm.error.errors, data);
     return {
       result: "error",
       message: "Ugyldig data",
@@ -47,6 +52,11 @@ export const submitApplicationAction = async (
   }
 
   if (new Date() > APPLICATION_DEADLINE) {
+    console.warn("Application submitted after deadline", {
+      group,
+      userId: user.id,
+      data: parsedForm.data,
+    });
     return {
       result: "error",
       message: "Søknadsfristen har gått ut",
@@ -75,6 +85,9 @@ export const submitApplicationAction = async (
       userId: user.id,
     });
   } catch (error) {
+    // Unknown error
+    console.error(error);
+
     if (error instanceof LibsqlError) {
       // Duplicate key error
       if (error.code === "2627") {
@@ -84,9 +97,6 @@ export const submitApplicationAction = async (
         };
       }
     }
-
-    // Unknown error
-    console.error(error);
 
     return {
       result: "error",
