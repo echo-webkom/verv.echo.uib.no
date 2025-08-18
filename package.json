@@ -13,7 +13,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx ./drizzle/migrate.ts",
     "db:studio": "drizzle-kit studio",
-    "db:start": "turso dev --db-file dev.db"
+    "db:start": "turso dev --db-file dev.db",
+    "db:seed": "tsx ./scripts/seed.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -73,6 +74,7 @@
     "@types/react-dom": "19.1.6",
     "dotenv": "16.6.0",
     "drizzle-kit": "0.31.3",
+    "drizzle-seed": "^0.3.1",
     "eslint": "9.29.0",
     "eslint-config-next": "15.3.4",
     "postcss": "8.5.6",
