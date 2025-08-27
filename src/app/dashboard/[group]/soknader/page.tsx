@@ -31,15 +31,6 @@ export default async function Applications({ params }: Props) {
     <>
       <h1 className="text-3xl font-bold">Dashboard for {groupNames[group]}</h1>
       <div className="space-y-4">
-        <a
-          href={`/${group}/sokere`}
-          className="py-2 text-lg text-blue-500 hover:underline"
-          title="Last ned som CSV"
-          download
-        >
-          Last ned som CSV
-        </a>
-
         <div>
           {applications.length === 0 ? (
             <p>Ingen søkere enda</p>
