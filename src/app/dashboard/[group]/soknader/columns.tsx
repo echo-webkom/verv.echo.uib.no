@@ -88,6 +88,7 @@ export const columns: Array<ColumnDef<SelectApplicationByGroupQuery[number]>> = 
   },
   {
     id: "actions",
+    header: "",
     cell: ({ row }) => {
       const application = row.original;
 

@@ -1,10 +1,18 @@
 "use client";
 
-import { Fragment } from "react";
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { ChevronDown, ChevronRight, Copy } from "lucide-react";
+import { Fragment, useState } from "react";
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { ChevronDown, ChevronRight, Copy, Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -37,31 +45,84 @@ const CopyIdButton = ({ application }: { application: SelectApplicationByGroupQu
   );
 };
 
-const TableActions = ({ data }: { data: SelectApplicationByGroupQuery }) => {
+const SearchInput = ({
+  globalFilter,
+  setGlobalFilter,
+}: {
+  globalFilter: string;
+  setGlobalFilter: (value: string) => void;
+}) => {
+  return (
+    <div className="relative">
+      <Search className="absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+      <Input
+        placeholder="Søk i alle felter..."
+        value={globalFilter}
+        onChange={(e) => setGlobalFilter(e.target.value)}
+        className="max-w-sm pl-8"
+      />
+    </div>
+  );
+};
+
+const TableActions = ({
+  data,
+  globalFilter,
+  setGlobalFilter,
+  filteredRowCount,
+}: {
+  data: SelectApplicationByGroupQuery;
+  globalFilter: string;
+  setGlobalFilter: (value: string) => void;
+  filteredRowCount: number;
+}) => {
   const { expandAll, collapseAll, expandedRows } = useExpandedRows();
   const allIds = data.map((item) => item.id);
   const allExpanded = allIds.length > 0 && allIds.every((id) => expandedRows.has(id));
   const group = data[0].groupId;
 
   return (
-    <div className="mb-4 flex gap-2">
-      <Button size="sm" onClick={() => expandAll(allIds)} disabled={allExpanded} className="h-8">
-        <ChevronDown className="mr-1 h-3 w-3" />
-        Utvid alle
-      </Button>
-      <Button size="sm" onClick={collapseAll} disabled={expandedRows.size === 0} className="h-8">
-        <ChevronRight className="mr-1 h-3 w-3" />
-        Lukk alle
-      </Button>
+    <div className="mb-4 space-y-4">
+      <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+        <SearchInput globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
 
-      <a
-        href={`/${group}/sokere`}
-        className="ml-auto text-lg text-blue-500 hover:underline"
-        title="Last ned som CSV"
-        download
-      >
-        Last ned som CSV
-      </a>
+        <div className="ml-auto flex gap-2">
+          <Button
+            size="sm"
+            onClick={() => expandAll(allIds)}
+            disabled={allExpanded}
+            className="h-8"
+          >
+            <ChevronDown className="mr-1 h-3 w-3" />
+            Utvid alle
+          </Button>
+          <Button
+            size="sm"
+            onClick={collapseAll}
+            disabled={expandedRows.size === 0}
+            className="h-8"
+          >
+            <ChevronRight className="mr-1 h-3 w-3" />
+            Lukk alle
+          </Button>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between">
+        <div className="text-muted-foreground text-sm">
+          {globalFilter
+            ? `${filteredRowCount} av ${data.length} søknader`
+            : `${data.length} søknader totalt`}
+        </div>
+        <a
+          href={`/${group}/sokere`}
+          className="text-sm text-blue-500 hover:underline"
+          title="Last ned som CSV"
+          download
+        >
+          Last ned som CSV
+        </a>
+      </div>
     </div>
   );
 };
@@ -144,15 +205,31 @@ function DataTableContent({
   data: SelectApplicationByGroupQuery;
 }) {
   const { expandedRows } = useExpandedRows();
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [globalFilter, setGlobalFilter] = useState("");
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
+    state: {
+      columnFilters,
+      globalFilter,
+    },
+    globalFilterFn: "includesString",
   });
 
   return (
     <>
-      <TableActions data={data} />
+      <TableActions
+        data={data}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
+        filteredRowCount={table.getFilteredRowModel().rows.length}
+      />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
