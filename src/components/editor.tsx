@@ -22,6 +22,7 @@ type EditorProps = {
 
 export const Editor = ({ value, onChange }: EditorProps) => {
   const editor = useEditor({
+    immediatelyRender: false,
     extensions: [
       StarterKit,
       Link.configure({

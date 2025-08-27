@@ -28,7 +28,7 @@ export default async function Applications({ params }: Props) {
   const applications = await selectApplicationsByGroup(group);
 
   return (
-    <main className="mx-auto w-full max-w-5xl space-y-8 px-6">
+    <>
       <h1 className="text-3xl font-bold">Dashboard for {groupNames[group]}</h1>
       <div className="space-y-4">
         <a
@@ -48,6 +48,6 @@ export default async function Applications({ params }: Props) {
           )}
         </div>
       </div>
-    </main>
+    </>
   );
 }

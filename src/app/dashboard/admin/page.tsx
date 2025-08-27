@@ -16,12 +16,12 @@ export default async function AdminDashboard() {
   const users = await selectAllUsers();
 
   return (
-    <main className="mx-auto w-full max-w-4xl space-y-8 px-6">
+    <>
       <h1 className="text-3xl font-bold">Dashboard for admin</h1>
 
       <p>Antall brukere: {users.length}</p>
 
       <DataTable columns={columns} data={users} />
-    </main>
+    </>
   );
 }

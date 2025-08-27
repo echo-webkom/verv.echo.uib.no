@@ -48,14 +48,14 @@ export const createFormSchema = (questions: Array<Question>) => {
       .string()
       .min(2, "Navnet ditt må være minst 2 tegn.")
       .max(255, "Navnet ditt kan ikke være lengre enn 255 tegn."),
-    email: z.string().min(1, "E-post er påkrevd.").email("Må være en gyldig e-postadresse."),
+    email: z.email().min(1, "E-post er påkrevd."),
     year: z.enum(yearEnum, {
-      errorMap: () => ({
+      error: () => ({
         message: "Du må velge et gyldig årstrinn.",
       }),
     }),
     study: z.enum(studyEnum, {
-      errorMap: () => ({
+      error: () => ({
         message: "Du må velge en gyldig studieretning.",
       }),
     }),

@@ -7,7 +7,7 @@ export const addQuestionSchema = z
     required: z.boolean(),
     placeholder: z.string().optional(),
     type: z.enum(["input", "textarea", "checkbox", "select"], {
-      errorMap: () => ({
+      error: () => ({
         message: "Du må velge en gyldig type.",
       }),
     }),

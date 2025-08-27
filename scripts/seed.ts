@@ -1,8 +1,7 @@
 import "dotenv/config";
 
 import { drizzle } from "drizzle-orm/libsql";
-
-// import { seed } from "drizzle-seed";
+import { seed } from "drizzle-seed";
 
 import { Group } from "@/lib/constants";
 import * as schema from "@/lib/db/schemas";
@@ -28,12 +27,33 @@ async function main() {
       });
   }
 
-  //   await seed(db, {
-  //     users: schema.users,
-  //     questions: schema.questions,
-  //     applications: schema.applications,
-  //     memberships: schema.memberships,
-  //   });
+  await seed(
+    db,
+    {
+      users: schema.users,
+      questions: schema.questions,
+      applications: schema.applications,
+      memberships: schema.memberships,
+    },
+    {
+      seed: Math.floor(Math.random() * 1000),
+      count: 100,
+    },
+  ).refine((f) => ({
+    applications: {
+      columns: {
+        groupId: f.valuesFromArray({
+          values: [...schema.groupEnum],
+        }),
+        year: f.valuesFromArray({
+          values: [...schema.yearEnum],
+        }),
+        study: f.valuesFromArray({
+          values: [...schema.studyEnum],
+        }),
+      },
+    },
+  }));
 }
 
 main()

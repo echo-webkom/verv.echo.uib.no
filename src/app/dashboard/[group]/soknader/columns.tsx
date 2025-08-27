@@ -39,24 +39,56 @@ const ViewDetailsButton = ({ application }: { application: Application }) => {
       <DialogTrigger asChild>
         <DropdownMenuItem onSelect={(e) => e.preventDefault()}>Se detaljer</DropdownMenuItem>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold">Detaljer for {application.name}</DialogTitle>
+          <DialogTitle className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+            Detaljer for {application.name}
+          </DialogTitle>
         </DialogHeader>
 
-        <div className="flex flex-col gap-2">
-          <p>ID: {application.id}</p>
-          <p>E-post: {application.email}</p>
-          <p>Studieretning: {application.study}</p>
-          <p>Årstrinn: {application.year}</p>
-          <p>Sendt inn: {application.createdAt.toLocaleString()}</p>
-          <div>
-            <p>Grunn:</p>
-            <article className="font-monodiv max-h-52 overflow-y-auto rounded-lg border bg-gray-100 p-2">
-              {application.body.split("\n").map((line, i) => (
-                <p key={i}>{line}</p>
-              ))}
-            </article>
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="space-y-3">
+              <div className="flex flex-col space-y-1">
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">E-post</span>
+                <span className="text-sm">{application.email}</span>
+              </div>
+              <div className="flex flex-col space-y-1">
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  Studieretning
+                </span>
+                <span className="text-sm">{application.study}</span>
+              </div>
+            </div>
+            <div className="space-y-3">
+              <div className="flex flex-col space-y-1">
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  Årstrinn
+                </span>
+                <span className="text-sm">{application.year}</span>
+              </div>
+              <div className="flex flex-col space-y-1">
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  Sendt inn
+                </span>
+                <span className="text-sm">{application.createdAt.toLocaleString()}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Søknadstekst
+            </span>
+            <div className="bg-accent max-h-60 overflow-y-auto rounded-lg border p-4">
+              <div className="prose prose-sm dark:prose-invert max-w-none">
+                {application.body.split("\n").map((line, i) => (
+                  <p key={i} className="mb-2 leading-relaxed last:mb-0">
+                    {line || "\u00A0"}
+                  </p>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </DialogContent>

@@ -31,10 +31,10 @@ export default async function GroupEditor({ params }: Props) {
   const description = g?.description ?? undefined;
 
   return (
-    <main className="mx-auto w-full max-w-6xl space-y-8 px-6">
+    <>
       <h1 className="text-3xl font-bold">Dashboard for {groupNames[group]}</h1>
 
       <UpdateDescription group={group} description={description} />
-    </main>
+    </>
   );
 }

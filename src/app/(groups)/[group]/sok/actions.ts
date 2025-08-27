@@ -44,7 +44,7 @@ export const submitApplicationAction = async (
   const parsedForm = formSchema.safeParse(data);
 
   if (!parsedForm.success) {
-    console.warn("Invalid application form data submitted", parsedForm.error.errors, data);
+    console.warn("Invalid application form data submitted", z.treeifyError(parsedForm.error), data);
     return {
       result: "error",
       message: "Ugyldig data",

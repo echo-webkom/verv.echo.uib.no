@@ -146,8 +146,8 @@ importers:
         specifier: 3.3.1
         version: 3.3.1
       zod:
-        specifier: 3.25.67
-        version: 3.25.67
+        specifier: 4.1.4
+        version: 4.1.4
     devDependencies:
       "@ianvs/prettier-plugin-sort-imports":
         specifier: 4.6.3
@@ -4763,6 +4763,7 @@ packages:
       {
         integrity: sha512-hkWCsiwTbNsrKeWqPh91ZZEcLDo0+WUnFv2QzITD33F7Er9KOlr7N2SGfNjAbnkciN+iPJ7g108Jkno1JFmzTw==,
       }
+    cpu: [x64, arm64, wasm32, arm]
     os: [darwin, linux, win32]
 
   lightningcss-darwin-arm64@1.30.1:
@@ -6286,13 +6287,6 @@ packages:
       }
     engines: { node: ">=0.10.0" }
 
-  source-map@0.7.4:
-    resolution:
-      {
-        integrity: sha512-l3BikUxvPOcn5E74dZiq5BGsTb5yEwhaTSzccU6t4sDOH8NWJCstKO5QT2CvtFoK6F0saL7p9xHAqHOlCPJygA==,
-      }
-    engines: { node: ">= 8" }
-
   source-map@0.7.6:
     resolution:
       {
@@ -6846,10 +6840,10 @@ packages:
       }
     engines: { node: ">=10" }
 
-  zod@3.25.67:
+  zod@4.1.4:
     resolution:
       {
-        integrity: sha512-idA2YXwpCdqUSKRCACDE6ItZD9TZzy3OZMtpfLoh6oPR47lipysRrJfjzMqFxQ3uJuUPyUeWe1r9vLH33xO/Qw==,
+        integrity: sha512-2YqJuWkU6IIK9qcE4k1lLLhyZ6zFw7XVRdQGpV97jEIZwTrscUw+DY31Xczd8nwaoksyJUIxCojZXwckJovWxA==,
       }
 
   zwitch@2.0.4:
@@ -7394,7 +7388,7 @@ snapshots:
   "@mdx-js/loader@3.1.0(acorn@8.15.0)(webpack@5.101.3(esbuild@0.25.9))":
     dependencies:
       "@mdx-js/mdx": 3.1.0(acorn@8.15.0)
-      source-map: 0.7.4
+      source-map: 0.7.6
     optionalDependencies:
       webpack: 5.101.3(esbuild@0.25.9)
     transitivePeerDependencies:
@@ -7421,7 +7415,7 @@ snapshots:
       remark-mdx: 3.1.0
       remark-parse: 11.0.0
       remark-rehype: 11.1.2
-      source-map: 0.7.4
+      source-map: 0.7.6
       unified: 11.0.5
       unist-util-position-from-estree: 2.0.0
       unist-util-stringify-position: 4.0.0
@@ -9356,7 +9350,7 @@ snapshots:
     dependencies:
       "@types/estree-jsx": 1.0.5
       astring: 1.9.0
-      source-map: 0.7.4
+      source-map: 0.7.6
 
   estree-util-visit@2.0.0:
     dependencies:
@@ -10970,8 +10964,6 @@ snapshots:
 
   source-map@0.6.1: {}
 
-  source-map@0.7.4: {}
-
   source-map@0.7.6: {}
 
   space-separated-tokens@2.0.2: {}
@@ -11394,6 +11386,6 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod@3.25.67: {}
+  zod@4.1.4: {}
 
   zwitch@2.0.4: {}

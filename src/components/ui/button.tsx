@@ -11,7 +11,8 @@ const buttonVariants = cva(
       variant: {
         default:
           "bg-slate-900 dark:bg-slate-200 dark:text-slate-900 text-slate-50 hover:bg-slate-900/90",
-        ghost: "bg-transparent text-slate-900 hover:bg-slate-50/90",
+        ghost:
+          "bg-transparent text-slate-900 hover:bg-slate-50/90 dark:text-slate-100 dark:hover:bg-muted/50",
         outline: "bg-transparent text-slate-900 border border-slate-900 hover:bg-slate-50/90",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/90 border-2 border-accent",

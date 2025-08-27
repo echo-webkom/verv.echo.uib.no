@@ -41,7 +41,7 @@ export const UpdateDescription = ({ group, description }: UpdateDescriptionProps
 
   return (
     <>
-      <Editor value={value} onChange={(value) => setValue(value)} />
+      <Editor value={value} onChange={setValue} />
       <Button disabled={isPending} onClick={onSave}>
         {isPending ? "Lagrer..." : "Lagre"}
       </Button>
