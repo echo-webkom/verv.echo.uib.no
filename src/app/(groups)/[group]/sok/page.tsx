@@ -65,11 +65,6 @@ export default async function ApplicationPage({ params }: Props) {
 
   return (
     <main className="mx-auto w-full max-w-2xl space-y-4 px-6">
-      <div className="absolute">
-        <span className="hover:text-foreground right-0 bottom-0 text-transparent transition-colors select-all">
-          K0D3: {process.env.SECRET_CODE_2}
-        </span>
-      </div>
       <h1 className="text-3xl font-bold">Send inn søknad til {g.name}</h1>
 
       <ApplicationForm group={g.id} user={user} questions={g.questions} />

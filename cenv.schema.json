@@ -24,12 +24,6 @@
     },
     "GROUPS_API_URL": {
       "key": "GROUPS_API_URL"
-    },
-    "SECRET_CODE_1": {
-      "key": "SECRET_CODE_1"
-    },
-    "SECRET_CODE_2": {
-      "key": "SECRET_CODE_2"
     }
   }
 }
