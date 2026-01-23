@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import {
   closestCenter,
   DndContext,
@@ -31,7 +31,11 @@ type QuestionsDndProps = {
 };
 
 export const QuestionsDnd = ({ groupId, questions }: QuestionsDndProps) => {
-  const [items, setItems] = useState(questions.sort((a, b) => a.order - b.order));
+  const sortedQuestions = useMemo(
+    () => [...questions].sort((a, b) => a.order - b.order),
+    [questions],
+  );
+  const [items, setItems] = useState(sortedQuestions);
   const [isPending, startTransition] = useTransition();
 
   const sensors = useSensors(
@@ -41,10 +45,6 @@ export const QuestionsDnd = ({ groupId, questions }: QuestionsDndProps) => {
       },
     }),
   );
-
-  useEffect(() => {
-    setItems(questions.sort((a, b) => a.order - b.order));
-  }, [questions]);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;

@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 import createMdx from "@next/mdx";
 
 const nextConfig: NextConfig = {
+  images: {
+    qualities: [100, 75],
+  },
   async headers() {
     return [
       {

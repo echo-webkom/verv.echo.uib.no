@@ -53,6 +53,7 @@ export const AddQuestionModal = ({ group }: AddQuestionModalProps) => {
     },
   });
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const questionType = form.watch("type");
   const options = form.watch("options") || [];
 
