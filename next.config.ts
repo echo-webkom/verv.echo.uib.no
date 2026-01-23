@@ -2,21 +2,9 @@ import type { NextConfig } from "next";
 import createMdx from "@next/mdx";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   images: {
     qualities: [100, 75],
-  },
-  async headers() {
-    return [
-      {
-        source: "/(.*)",
-        headers: [
-          {
-            key: "X-S3cr3t-K0de",
-            value: process.env.SECRET_CODE_1 || "default",
-          },
-        ],
-      },
-    ];
   },
 };
 
