@@ -22,6 +22,8 @@ COPY . .
 RUN pnpm db:generate
 
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV SKIP_ENV_VALIDATION=true
+
 RUN pnpm build
 
 FROM node:24-alpine AS runner

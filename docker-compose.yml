@@ -3,15 +3,18 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    network_mode: "host"
+    ports:
+      - "3000:3000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
-      # Database - Don't use localhost as it refers to the container itself
-      - DATABASE_URL=${DATABASE_URL:-http://127.0.0.1:8080}
+      # Database - use host.docker.internal to connect to host machine
+      - DATABASE_URL=${DATABASE_URL:-http://host.docker.internal:8080}
       # Auth
       - FEIDE_CLIENT_ID=${FEIDE_CLIENT_ID}
       - FEIDE_CLIENT_SECRET=${FEIDE_CLIENT_SECRET}
       # Groups
-      - GROUPS_API_URL=${GROUPS_API_URL:-http://127.0.0.1:3000/api/groups}
+      - GROUPS_API_URL=${GROUPS_API_URL:-http://localhost:3000/api/groups}
       # API
       - ADMIN_KEY=${ADMIN_KEY:-foobar}
       # AWS SES
