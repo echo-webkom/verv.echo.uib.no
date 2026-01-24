@@ -43,11 +43,10 @@ export const ApplicationForm = ({ group, user, questions }: ApplicationFormProps
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    // Fields like `year`, `study` and `questions` are by default `undefined`,
-    // so we don't need to explicitly set them here.
     defaultValues: {
       name: user.name ?? "",
       email: "",
+      questions: {},
     },
   });
 
@@ -254,8 +253,8 @@ export const ApplicationForm = ({ group, user, questions }: ApplicationFormProps
             />
           ))}
 
-        <Button type="submit">
-          <span>Send inn</span>
+        <Button type="submit" disabled={form.formState.isSubmitting}>
+          <span>{form.formState.isSubmitting ? "Sender..." : "Send inn"}</span>
         </Button>
       </form>
     </Form>
