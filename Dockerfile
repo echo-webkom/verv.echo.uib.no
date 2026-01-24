@@ -22,9 +22,6 @@ COPY . .
 RUN pnpm db:generate
 
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV DATABASE_URL="postgresql://postgres:postgres@localhost:5432/verv"
-ENV FEIDE_CLIENT_ID="build"
-ENV FEIDE_CLIENT_SECRET="build"
 ENV SKIP_ENV_VALIDATION=true
 
 RUN pnpm build

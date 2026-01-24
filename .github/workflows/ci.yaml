@@ -56,7 +56,3 @@ jobs:
 
       - name: 👷🏻‍♂️ Build
         run: pnpm build
-        env:
-          FEIDE_CLIENT_ID: ci-build
-          FEIDE_CLIENT_SECRET: ci-build
-          SKIP_ENV_VALIDATION: true
