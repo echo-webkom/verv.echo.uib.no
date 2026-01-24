@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { LibsqlError } from "@libsql/client";
 import { z } from "zod";
 
 import { auth } from "@/lib/auth/lucia";
@@ -88,14 +87,12 @@ export const submitApplicationAction = async (
     // Unknown error
     console.error(error);
 
-    if (error instanceof LibsqlError) {
-      // Duplicate key error
-      if (error.code === "2627") {
-        return {
-          result: "error",
-          message: "Du kan ikke søke flere ganger",
-        };
-      }
+    // PostgreSQL unique constraint violation error code
+    if (error && typeof error === "object" && "code" in error && error.code === "23505") {
+      return {
+        result: "error",
+        message: "Du kan ikke søke flere ganger",
+      };
     }
 
     return {

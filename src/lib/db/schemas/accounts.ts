@@ -1,9 +1,9 @@
 import { InferSelectModel, relations } from "drizzle-orm";
-import { primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { pgTable, primaryKey, text } from "drizzle-orm/pg-core";
 
 import { users } from "./users";
 
-export const accounts = sqliteTable(
+export const accounts = pgTable(
   "account",
   {
     userId: text()

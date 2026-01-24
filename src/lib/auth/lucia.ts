@@ -1,13 +1,13 @@
 import { cache } from "react";
 import { cookies } from "next/headers";
-import { DrizzleSQLiteAdapter } from "@lucia-auth/adapter-drizzle";
+import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
 import { Lucia, Session, User } from "lucia";
 
 import { Group } from "../constants";
 import { db } from "../db/drizzle";
 import { sessions, users, type User as DatabaseUser } from "../db/schemas";
 
-const adapter = new DrizzleSQLiteAdapter(db, sessions, users);
+const adapter = new DrizzlePostgreSQLAdapter(db, sessions, users);
 
 export const lucia = new Lucia(adapter, {
   sessionCookie: {

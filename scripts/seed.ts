@@ -1,13 +1,16 @@
 import "dotenv/config";
 
-import { drizzle } from "drizzle-orm/libsql";
+import { drizzle } from "drizzle-orm/postgres-js";
 import { seed } from "drizzle-seed";
+import postgres from "postgres";
 
 import { Group } from "@/lib/constants";
 import * as schema from "@/lib/db/schemas";
 import { groups } from "./groups";
 
-const db = drizzle(process.env.DATABASE_URL!, {
+const client = postgres(process.env.DATABASE_URL!);
+const db = drizzle(client, {
+  schema,
   casing: "snake_case",
 });
 
@@ -27,19 +30,12 @@ async function main() {
       });
   }
 
-  await seed(
-    db,
-    {
-      users: schema.users,
-      questions: schema.questions,
-      applications: schema.applications,
-      memberships: schema.memberships,
-    },
-    {
-      seed: Math.floor(Math.random() * 1000),
-      count: 100,
-    },
-  ).refine((f) => ({
+  await seed(db as any, {
+    users: schema.users,
+    questions: schema.questions,
+    applications: schema.applications,
+    memberships: schema.memberships,
+  }).refine((f) => ({
     applications: {
       columns: {
         groupId: f.valuesFromArray({
@@ -54,6 +50,8 @@ async function main() {
       },
     },
   }));
+
+  await client.end();
 }
 
 main()
