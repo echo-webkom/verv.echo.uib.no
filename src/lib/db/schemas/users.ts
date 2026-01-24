@@ -1,11 +1,11 @@
 import { InferSelectModel, relations } from "drizzle-orm";
-import { sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { pgTable, text } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 
 import { applications } from "./applications";
 import { memberships } from "./memberships";
 
-export const users = sqliteTable("user", {
+export const users = pgTable("user", {
   id: text().primaryKey().$defaultFn(nanoid),
   name: text(),
   email: text().unique(),

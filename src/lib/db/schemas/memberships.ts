@@ -1,10 +1,10 @@
 import { relations } from "drizzle-orm";
-import { primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { pgTable, primaryKey, text } from "drizzle-orm/pg-core";
 
 import { groupEnum } from "./enums";
 import { users } from "./users";
 
-export const memberships = sqliteTable(
+export const memberships = pgTable(
   "membership",
   {
     groupId: text({ enum: groupEnum }).notNull(),

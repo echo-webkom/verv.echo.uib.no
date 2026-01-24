@@ -7,19 +7,26 @@ on:
       - synchronize
 
 env:
-  DATABASE_URL: http://127.0.0.1:8080
+  DATABASE_URL: postgresql://postgres:postgres@localhost:5432/verv
 
 jobs:
   ci:
     runs-on: ubuntu-latest
 
     services:
-      libsql:
-        image: ghcr.io/tursodatabase/libsql-server:latest
+      postgres:
+        image: postgres:17-alpine
         ports:
-          - 8080:8080
+          - 5432:5432
         env:
-          SQLD_NODE: primary
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: verv
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: 🔍 Checkout

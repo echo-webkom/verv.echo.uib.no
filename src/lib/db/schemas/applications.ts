@@ -1,11 +1,11 @@
 import { InferSelectModel, relations } from "drizzle-orm";
-import { integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+import { pgTable, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 
 import { groupEnum, studyEnum, yearEnum } from "./enums";
 import { users } from "./users";
 
-export const applications = sqliteTable(
+export const applications = pgTable(
   "application",
   {
     id: text().notNull().primaryKey().$defaultFn(nanoid),
@@ -18,7 +18,7 @@ export const applications = sqliteTable(
       .notNull()
       .references(() => users.id),
     groupId: text({ enum: groupEnum }).notNull(),
-    createdAt: integer({ mode: "timestamp" })
+    createdAt: timestamp()
       .notNull()
       .$defaultFn(() => new Date()),
   },

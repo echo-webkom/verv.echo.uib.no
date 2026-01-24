@@ -1,1 +1,0 @@
-ALTER TABLE `question` ADD `options` text;
