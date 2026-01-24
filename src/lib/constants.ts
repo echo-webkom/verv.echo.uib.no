@@ -11,7 +11,7 @@ export type Year = (typeof yearEnum)[number];
 export type Study = (typeof studyEnum)[number];
 export type Group = (typeof groupEnum)[number];
 
-export const APPLICATION_DEADLINE = fromZonedTime("2026-01-31 23:59:59", "Europe/Oslo");
+export const APPLICATION_DEADLINE = fromZonedTime("2025-08-31 23:59:59", "Europe/Oslo");
 
 export const yearNames = {
   1: "1. året",
