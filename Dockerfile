@@ -22,6 +22,9 @@ COPY . .
 RUN pnpm db:generate
 
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV DATABASE_URL="http://localhost:8080"
+ENV FEIDE_CLIENT_ID="build"
+ENV FEIDE_CLIENT_SECRET="build"
 ENV SKIP_ENV_VALIDATION=true
 
 RUN pnpm build
@@ -30,10 +33,6 @@ FROM node:24-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV DATABASE_URL="http://localhost:8080"
-ENV FEIDE_CLIENT_ID="build"
-ENV FEIDE_CLIENT_SECRET="build"
-ENV SKIP_ENV_VALIDATION=true
 ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup --system --gid 1001 nodejs
