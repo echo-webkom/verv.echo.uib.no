@@ -1,3 +1,5 @@
+import { fromZonedTime } from "date-fns-tz";
+
 import { groupEnum, studyEnum, yearEnum } from "./db/schemas";
 
 export const BASE_URL =
@@ -9,7 +11,7 @@ export type Year = (typeof yearEnum)[number];
 export type Study = (typeof studyEnum)[number];
 export type Group = (typeof groupEnum)[number];
 
-export const APPLICATION_DEADLINE = new Date("Aug 31 2025 23:59:59 UTC+02:00");
+export const APPLICATION_DEADLINE = fromZonedTime("2026-01-31 23:59:59", "Europe/Oslo");
 
 export const yearNames = {
   1: "1. året",
