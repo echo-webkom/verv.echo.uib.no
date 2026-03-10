@@ -39,12 +39,8 @@
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -52,10 +48,7 @@
       "compositePrimaryKeys": {
         "account_provider_provider_account_id_pk": {
           "name": "account_provider_provider_account_id_pk",
-          "columns": [
-            "provider",
-            "provider_account_id"
-          ]
+          "columns": ["provider", "provider_account_id"]
         }
       },
       "uniqueConstraints": {},
@@ -150,12 +143,8 @@
           "name": "application_user_id_user_id_fk",
           "tableFrom": "application",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -214,12 +203,8 @@
           "name": "membership_user_id_user_id_fk",
           "tableFrom": "membership",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -227,10 +212,7 @@
       "compositePrimaryKeys": {
         "membership_user_id_group_id_pk": {
           "name": "membership_user_id_group_id_pk",
-          "columns": [
-            "user_id",
-            "group_id"
-          ]
+          "columns": ["user_id", "group_id"]
         }
       },
       "uniqueConstraints": {},
@@ -351,12 +333,8 @@
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -403,16 +381,12 @@
         "user_email_unique": {
           "name": "user_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         },
         "user_alternativeEmail_unique": {
           "name": "user_alternativeEmail_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "alternative_email"
-          ]
+          "columns": ["alternative_email"]
         }
       },
       "policies": {},
