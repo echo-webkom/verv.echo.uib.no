@@ -1,0 +1,27 @@
+[[entries]]
+key = "BASE_URL"
+required = true
+default = "http://localhost:3000"
+
+[[entries]]
+key = "ADMIN_KEY"
+required = true
+default = "foobar"
+
+[[entries]]
+key = "UNO_BASE_URL"
+required = true
+default = "http://localhost:8000"
+
+[[entries]]
+key = "DATABASE_URL"
+required = true
+default = "postgresql://postgres:postgres@localhost:5432/postgres"
+
+[[entries]]
+key = "FEIDE_CLIENT_ID"
+required = true
+
+[[entries]]
+key = "FEIDE_CLIENT_SECRET"
+required = true

@@ -1,7 +1,18 @@
 import { Group } from "./constants";
 import { groupEnum } from "./db/schemas";
 
-const url = process.env.GROUPS_API_URL;
+const url = process.env.UNO_BASE_URL;
+
+type GroupResponse = {
+  name: string;
+  id: string;
+  isLeader: boolean;
+};
+
+// Partial user response from echo
+type UserResponse = {
+  groups: GroupResponse[];
+};
 
 const isValidGroup = (group: string): group is Group => {
   return groupEnum.includes(group as Group);
@@ -12,10 +23,7 @@ export const getEchoGroups = async (feideId: string) => {
     return [];
   }
 
-  const fetchUrl = new URL(url);
-  fetchUrl.searchParams.set("feideId", feideId);
-
-  const response = await fetch(fetchUrl, {
+  const response = await fetch(`${url}/users/${feideId}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${process.env.ADMIN_KEY}`,
@@ -26,9 +34,11 @@ export const getEchoGroups = async (feideId: string) => {
     return [];
   }
 
-  const groups = (await response.json()) as Array<string>;
+  const user = (await response.json()) as UserResponse;
 
-  const filteredGroups = groups.filter(isValidGroup);
+  const filteredGroups = user.groups
+    .filter((group) => isValidGroup(group.id))
+    .map((group) => group.id as Group);
 
   return filteredGroups;
 };
