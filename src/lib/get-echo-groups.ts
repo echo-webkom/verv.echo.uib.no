@@ -26,7 +26,7 @@ export const getEchoGroups = async (feideId: string) => {
   const response = await fetch(`${url}/users/${feideId}`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.ADMIN_KEY}`,
+      "X-Admin-Key": `${process.env.ADMIN_KEY}`,
     },
   });
 
