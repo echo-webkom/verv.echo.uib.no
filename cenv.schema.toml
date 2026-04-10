@@ -25,3 +25,7 @@ required = true
 [[entries]]
 key = "FEIDE_CLIENT_SECRET"
 required = true
+
+[[entries]]
+key = "NEXT_PUBLIC_PLAUSIBLE_SCRIPT_URL"
+required = false

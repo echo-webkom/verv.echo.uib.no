@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import PlausibleProvider from "next-plausible";
 import { ThemeProvider } from "next-themes";
 
 import { SiteFooter } from "@/components/site-footer";
@@ -52,12 +53,19 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="no" suppressHydrationWarning>
       <body className={cn("flex min-h-screen flex-col antialiased", inter.className)}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <SiteHeader />
-          <div className="flex-1 py-14">{children}</div>
-          <SiteFooter />
-          <Toaster />
-        </ThemeProvider>
+        <PlausibleProvider
+          enabled={Boolean(process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_URL)}
+          init={{
+            autoCapturePageviews: false,
+          }}
+        >
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <SiteHeader />
+            <div className="flex-1 py-14">{children}</div>
+            <SiteFooter />
+            <Toaster />
+          </ThemeProvider>
+        </PlausibleProvider>
       </body>
     </html>
   );

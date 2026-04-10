@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import createMdx from "@next/mdx";
+import { withPlausibleProxy } from "next-plausible";
 
 const nextConfig: NextConfig = {
   output: "standalone",
@@ -12,4 +13,6 @@ const withMdx = createMdx({
   extension: /\.(md|mdx)$/,
 });
 
-export default withMdx(nextConfig);
+export default withPlausibleProxy({
+  src: process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_URL!,
+})(withMdx(nextConfig));
