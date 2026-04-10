@@ -27,5 +27,10 @@ key = "FEIDE_CLIENT_SECRET"
 required = true
 
 [[entries]]
-key = "NEXT_PUBLIC_PLAUSIBLE_SCRIPT_URL"
+key = "NEXT_PUBLIC_UMAMI_WEBSITE_ID"
 required = false
+
+[[entries]]
+key = "NEXT_PUBLIC_UMAMI_URL"
+required = false
+type = "url"

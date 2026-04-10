@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
-import PlausibleProvider from "next-plausible";
+import Script from "next/script";
 import { ThemeProvider } from "next-themes";
 
 import { SiteFooter } from "@/components/site-footer";
@@ -50,22 +50,26 @@ type RootLayoutProps = {
 };
 
 export default function RootLayout({ children }: RootLayoutProps) {
+  const umamiUrl = process.env.NEXT_PUBLIC_UMAMI_URL;
+  const umamiWebsiteId = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
+
   return (
     <html lang="no" suppressHydrationWarning>
       <body className={cn("flex min-h-screen flex-col antialiased", inter.className)}>
-        <PlausibleProvider
-          enabled={Boolean(process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_URL)}
-          init={{
-            autoCapturePageviews: false,
-          }}
-        >
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <SiteHeader />
-            <div className="flex-1 py-14">{children}</div>
-            <SiteFooter />
-            <Toaster />
-          </ThemeProvider>
-        </PlausibleProvider>
+        {umamiUrl && umamiWebsiteId && (
+          <Script
+            src={`${umamiUrl}/script.js`}
+            data-website-id={umamiWebsiteId}
+            data-endpoint="/api/t"
+            strategy="afterInteractive"
+          />
+        )}
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <SiteHeader />
+          <div className="flex-1 py-14">{children}</div>
+          <SiteFooter />
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );
