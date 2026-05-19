@@ -2,7 +2,7 @@
 set -e
 
 echo "Running database migrations..."
-pnpm db:migrate
+node_modules/.bin/tsx ./drizzle/migrate.ts
 
 echo "Starting application..."
 exec "$@"
