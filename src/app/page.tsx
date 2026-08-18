@@ -46,7 +46,7 @@ export default function Home() {
           }}
           className="text-muted-foreground text-xl font-medium"
         >
-          echo har nå åpnet for søknader til verv. Søknadsfristen er 1. september. Det er lov å søke
+          echo har nå åpnet for søknader til verv. Søknadsfristen er 30. august. Det er lov å søke
           på flere grupper!
         </motion.p>
       </section>
