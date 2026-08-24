@@ -17,6 +17,12 @@ const applicationCountStmt = db
   })
   .from(applications);
 
+const uniqueApplicationCountStmt = db
+  .select({
+    count: sql<number>`count(distinct ${applications.userId})`,
+  })
+  .from(applications);
+
 export default async function Dashboard() {
   const user = await auth();
 
@@ -25,12 +31,14 @@ export default async function Dashboard() {
   }
 
   const applicationCount = await applicationCountStmt.execute().then((res) => res[0].count);
+  const uniqueApplicationCount = await uniqueApplicationCountStmt.execute().then((res) => res[0].count);
 
   return (
     <>
       <h1 className="text-3xl font-bold">Dashboard</h1>
 
       <p>Totalt antall søkere: {applicationCount}</p>
+      <p>Unike søkere: {uniqueApplicationCount}</p>
 
       <WebkomVsBedkom />
       <WebkomVsConsulting />
